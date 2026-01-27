@@ -83,7 +83,7 @@ Key connection points:
 
 ## Features
 
-- User authentication (email/password)
+- User authentication (Google OAuth)
 - Create challenges with monetary stakes
 - Real-time countdown timers
 - Complete or fail challenges

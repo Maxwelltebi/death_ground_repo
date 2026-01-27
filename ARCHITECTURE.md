@@ -67,18 +67,22 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
 
 **Key Functions**:
 - `initAuth()` - Initialize auth state on app load
-- `signUp(email, password, displayName)` - Create new user account
-- `signIn(email, password)` - Authenticate existing user
+- `signInWithGoogle()` - Authenticate using Google OAuth
 - `signOut()` - Log out current user
 
 **Backend Connection**:
 ```typescript
-// Sign up connects to Supabase Auth
-await supabase.auth.signUp({
-  email,
-  password,
-  options: { data: { display_name: displayName } }
-});
+// Google OAuth sign-in
+const signInWithGoogle = async () => {
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+      redirectTo: `${window.location.origin}/dashboard`,
+    },
+  });
+  if (error) throw error;
+  return data;
+};
 
 // Auth state listener connects to Supabase real-time updates
 supabase.auth.onAuthStateChange((_event, session) => {
@@ -87,16 +91,26 @@ supabase.auth.onAuthStateChange((_event, session) => {
 ```
 
 **Where Used**:
-- `AuthPage.vue` - Login/signup forms
+- `AuthPage.vue` - Google OAuth login
 - `DashboardPage.vue` - User info display
 - `router/index.ts` - Route protection
 
+**Important Setup**:
+Before Google OAuth works, you must configure it in your Supabase dashboard:
+1. Go to Authentication > Providers
+2. Enable Google provider
+3. Add your Google OAuth client ID and secret
+4. Add authorized redirect URLs
+
 **How to Modify**:
-To add social authentication:
+To add additional OAuth providers:
 ```typescript
-const signInWithGoogle = async () => {
+const signInWithGitHub = async () => {
   const { data, error } = await supabase.auth.signInWithOAuth({
-    provider: 'google',
+    provider: 'github',
+    options: {
+      redirectTo: `${window.location.origin}/dashboard`,
+    },
   });
   if (error) throw error;
   return data;

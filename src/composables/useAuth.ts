@@ -24,25 +24,12 @@ export function useAuth() {
     }
   };
 
-  const signUp = async (email: string, password: string, displayName?: string) => {
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
+  const signInWithGoogle = async () => {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
       options: {
-        data: {
-          display_name: displayName,
-        },
+        redirectTo: `${window.location.origin}/dashboard`,
       },
-    });
-
-    if (error) throw error;
-    return data;
-  };
-
-  const signIn = async (email: string, password: string) => {
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
     });
 
     if (error) throw error;
@@ -59,8 +46,7 @@ export function useAuth() {
     isAuthenticated,
     loading: computed(() => loading.value),
     initAuth,
-    signUp,
-    signIn,
+    signInWithGoogle,
     signOut,
   };
 }
