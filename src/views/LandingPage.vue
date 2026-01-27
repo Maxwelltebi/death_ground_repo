@@ -7,6 +7,13 @@ const router = useRouter();
 const navigateToAuth = () => {
   router.push('/auth');
 };
+
+const scrollToFeatures = () => {
+  const featuresSection = document.querySelector('.features');
+  if (featuresSection) {
+    featuresSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+};
 </script>
 
 <template>
@@ -34,7 +41,7 @@ const navigateToAuth = () => {
           <AppButton variant="primary" size="lg" @click="navigateToAuth">
             CREATE YOUR DEATH GROUND
           </AppButton>
-          <AppButton variant="ghost" size="lg">LEARN HOW IT WORKS</AppButton>
+          <AppButton variant="ghost" size="lg" @click="scrollToFeatures">LEARN HOW IT WORKS</AppButton>
         </div>
       </div>
     </div>
